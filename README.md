@@ -1,7 +1,6 @@
-# UW CSE 517 Recreation of Semantically Informed Slang Interpretation - Code and Data Repository
-
-#### Originally By: [Zhewei Sun](http://www.cs.toronto.edu/~zheweisun/)
+# UW CSE 517 Recreation of Semantically Informed Slang Interpretation
 #### Recreated and Extended By: Ann Baturytski, Julia Kharchenko, Ron Pechuk, Viraj Goyal
+##### Originally By: [Zhewei Sun](http://www.cs.toronto.edu/~zheweisun/)
 
 This is github repository is froked from the [github repository](https://github.com/zhewei-sun/slanginterp) made for the NAACL paper "[Semantically Informed Slang Interpretation](https://aclanthology.org/2022.naacl-main.383/)".
 
