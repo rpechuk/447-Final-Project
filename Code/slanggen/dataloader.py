@@ -136,9 +136,24 @@ class UD_Wil_Dataset(SlangDataset):
         self.meta_set.add('context')
         
     def load_data(self, slang_path, conv_dataset):
+        print(slang_path)
         
-        data_train = pd.read_csv(slang_path+'/train.tsv', sep='\t', error_bad_lines=False, header=None, usecols=[0,1,2]).values
-        data_test = pd.read_csv(slang_path+'/test.tsv', sep='\t', error_bad_lines=False, header=None, usecols=[0,1,2]).values
+        # data_train = pd.read_csv(slang_path+'/train.tsv', sep='\t', error_bad_lines=False, header=None, usecols=[0,1,2]).values
+        # data_test = pd.read_csv(slang_path+'/test.tsv', sep='\t', error_bad_lines=False, header=None, usecols=[0,1,2]).values
+        data_train = pd.read_csv(slang_path+'UD_train.csv', error_bad_lines=False, usecols=[0,1,2]).values
+        data_test = pd.read_csv(slang_path+'UD_test.csv', error_bad_lines=False, usecols=[0,1,2]).values
+        
+        print(data_train.shape, data_test.shape)
+
+        # Create a filter mask for the training data.
+        filter_mask_train = ~pd.isnull(data_train[:, 0])
+
+        # Create a filter mask for the test data.
+        filter_mask_test = ~pd.isnull(data_test[:, 0])
+
+        # Save the filter masks to .npy files.
+        np.save(slang_path+'/filter_mask_train.npy', filter_mask_train)
+        np.save(slang_path+'/filter_mask_test.npy', filter_mask_test)
         
         filter_mask_train = np.load(slang_path+'/filter_mask_train.npy')
         filter_mask_test = np.load(slang_path+'/filter_mask_test.npy')
