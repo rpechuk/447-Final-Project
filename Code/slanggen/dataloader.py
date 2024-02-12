@@ -32,7 +32,9 @@ class OED_Dataset(ConvDataset):
     
     def load_data(self, data_path):
         data_OED = np.load(data_path, allow_pickle=True)
+        print(data_OED)
         vocab_OED = set([w.word for w in data_OED])
+        print(vocab_OED)
         return data_OED, vocab_OED
     
 class WN_Dataset(ConvDataset):
@@ -136,8 +138,6 @@ class UD_Wil_Dataset(SlangDataset):
         self.meta_set.add('context')
         
     def load_data(self, slang_path, conv_dataset):
-        print(slang_path)
-        
         # data_train = pd.read_csv(slang_path+'/train.tsv', sep='\t', error_bad_lines=False, header=None, usecols=[0,1,2]).values
         # data_test = pd.read_csv(slang_path+'/test.tsv', sep='\t', error_bad_lines=False, header=None, usecols=[0,1,2]).values
         data_train = pd.read_csv(slang_path+'UD_train.csv', error_bad_lines=False, usecols=[0,1,2]).values
