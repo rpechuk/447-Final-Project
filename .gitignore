@@ -3,3 +3,6 @@ Code/pretrain/models/sto_ilm/pytorch_model.bin
 Code/OED_Urban_def_full.npy
 
 Code/1990-pos_counts.pkl
+
+Code/fastText/crawl-300d-2M-subword_word.npy
+Code/fastText/crawl-300d-2M-subword_embed.npy
