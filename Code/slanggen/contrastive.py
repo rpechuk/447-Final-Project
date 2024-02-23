@@ -135,8 +135,9 @@ class SlangGenTrainer:
         train_loss = losses.TripletLoss(model=sbert_model, triplet_margin=params['triplet_margin'])
 
         dev_data = SentencesDataset(examples=triplet_reader.get_examples('contrastive_dev.csv'), model=sbert_model)
-        dev_dataloader = DataLoader(dev_data, shuffle=False, batch_size=params['train_batch_size'])
-        evaluator = TripletEvaluator(dev_dataloader)
+        # dev_dataloader = DataLoader(dev_data, shuffle=False, batch_size=params['train_batch_size'])
+        # evaluator = TripletEvaluator(dev_dataloader)
+        evaluator = TripletEvaluator.from_input_examples(dev_data.examples, name='contrastive_dev')
         
         warmup_steps = int(len(train_data)*params['num_epochs']/params['train_batch_size']*0.1) #10% of train data
 
