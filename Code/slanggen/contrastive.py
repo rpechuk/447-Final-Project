@@ -1,5 +1,6 @@
 import numpy as np
 import pandas as pd
+import torch
 
 import scipy.spatial.distance as dist
 
@@ -128,7 +129,9 @@ class SlangGenTrainer:
         triplet_reader = TripletReader(out_dir, s1_col_idx=0, s2_col_idx=1, s3_col_idx=2, delimiter=',', has_header=True)
         output_path = out_dir+params['outpath']
         
-        sbert_model = SentenceTransformer('bert-base-nli-mean-tokens')
+        device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+        print("Using device: ", device)
+        sbert_model = SentenceTransformer('bert-base-nli-mean-tokens', device=device)
         
         train_data = SentencesDataset(examples=triplet_reader.get_examples('contrastive_train.csv'), model=sbert_model)
         train_dataloader = DataLoader(train_data, shuffle=True, batch_size=params['train_batch_size'])
