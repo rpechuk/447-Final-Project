@@ -90,7 +90,6 @@ class Word:
         new_def = {'def':word_def, 'pos':pos, 'sents':sentences}
         self.pos_tags.add(pos)
         self.definitions.append(new_def)
-        
 # Evaluation helpers
 
 def get_rankings(l_model, inds, labels):

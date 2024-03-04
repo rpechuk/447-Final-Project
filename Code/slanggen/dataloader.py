@@ -32,6 +32,7 @@ class OED_Dataset(ConvDataset):
     
     def load_data(self, data_path):
         data_OED = np.load(data_path, allow_pickle=True)
+        data_OED = np.append(data_OED, (Word('gyatt'), Word('sus'), Word('simp'), Word('bussin'), Word('jetlag')))
         vocab_OED = set([w.word for w in data_OED])
         return data_OED, vocab_OED
     
@@ -88,7 +89,7 @@ class SlangDataset:
         conv_data = conv_dataset.data
         
         slang_data = [d for d in slang_entries if not acronym_check(d)]
-        slang_data = [d for d in slang_data if not has_close_conv_def(str(d.word), d.def_sent, conv_data)]
+        slang_data = [d for d in slang_data if not has_close_conv_def(str(d.word), d.def_sent, conv_data) or d.word in ['toe', 'grandparent', 'toddler', 'sibling']]
         
         if not self.load_oov:
             return slang_data, conv_data
@@ -143,7 +144,7 @@ class UD_Wil_Dataset(SlangDataset):
         data_test = pd.read_csv(slang_path+'UD_test.csv', on_bad_lines='warn', usecols=[0,1,2]).values
 
         
-        print(data_train.shape, data_test.shape, data_dev.shape)
+        print(data_train.shape, data_dev.shape, data_test.shape)
 
         # Create a filter mask for the training data.
         filter_mask_train = ~pd.isnull(data_train[:, 0])
@@ -163,7 +164,7 @@ class UD_Wil_Dataset(SlangDataset):
         filter_mask_dev = np.load(slang_path+'/filter_mask_dev.npy')
         filter_mask_test = np.load(slang_path+'/filter_mask_test.npy')
         
-        data_raw = np.concatenate((data_train[filter_mask_train], data_test[filter_mask_test], data_dev[filter_mask_dev]))
+        data_raw = np.concatenate((data_train[filter_mask_train], data_dev[filter_mask_dev], data_test[filter_mask_test]))
         
         def process_def(d):
             return SlangEntry(str(d[0]), str(d[1]), {'context':[str(d[2]).replace(str(d[0]), '[*SLANGAAAP*]')]})
