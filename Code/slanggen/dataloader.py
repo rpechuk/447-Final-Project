@@ -139,24 +139,31 @@ class UD_Wil_Dataset(SlangDataset):
         # data_train = pd.read_csv(slang_path+'/train.tsv', sep='\t', error_bad_lines=False, header=None, usecols=[0,1,2]).values
         # data_test = pd.read_csv(slang_path+'/test.tsv', sep='\t', error_bad_lines=False, header=None, usecols=[0,1,2]).values
         data_train = pd.read_csv(slang_path+'UD_train.csv', on_bad_lines='warn', usecols=[0,1,2]).values
+        data_dev = pd.read_csv(slang_path+'UD_dev.csv', on_bad_lines='warn', usecols=[0,1,2]).values
         data_test = pd.read_csv(slang_path+'UD_test.csv', on_bad_lines='warn', usecols=[0,1,2]).values
+
         
-        print(data_train.shape, data_test.shape)
+        print(data_train.shape, data_test.shape, data_dev.shape)
 
         # Create a filter mask for the training data.
         filter_mask_train = ~pd.isnull(data_train[:, 0])
 
+        # Create a filter mask for the dev data.
+        filter_mask_dev = ~pd.isnull(data_dev[:, 0])
+        
         # Create a filter mask for the test data.
         filter_mask_test = ~pd.isnull(data_test[:, 0])
 
         # Save the filter masks to .npy files.
         np.save(slang_path+'/filter_mask_train.npy', filter_mask_train)
+        np.save(slang_path+'/filter_mask_dev.npy', filter_mask_dev)
         np.save(slang_path+'/filter_mask_test.npy', filter_mask_test)
         
         filter_mask_train = np.load(slang_path+'/filter_mask_train.npy')
+        filter_mask_dev = np.load(slang_path+'/filter_mask_dev.npy')
         filter_mask_test = np.load(slang_path+'/filter_mask_test.npy')
         
-        data_raw = np.concatenate((data_train[filter_mask_train], data_test[filter_mask_test]))
+        data_raw = np.concatenate((data_train[filter_mask_train], data_test[filter_mask_test], data_dev[filter_mask_dev]))
         
         def process_def(d):
             return SlangEntry(str(d[0]), str(d[1]), {'context':[str(d[2]).replace(str(d[0]), '[*SLANGAAAP*]')]})
